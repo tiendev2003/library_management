@@ -1,0 +1,186 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}{% endblock  %}</title>
+    <link rel="stylesheet" href={% static 'css/bootswatch_flatly.css' %} />
+    <link rel="stylesheet" href={% static 'css/home.css' %}>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    {% comment %} Toastr messages {% endcomment %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" integrity="sha512-vKMx8UnXk60zUwyUnUPM3HbQo8QfmNx7+ltw8Pm5zLusl1XIfwcxo8DbWCqMGKaWeNxWA8yrx5v3SaVpMvR3CA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</head>
+<body>
+    <input type="checkbox" id="nav-toggle">
+    <div class="sidebar" target="_sidebar">
+        <div class="sidebar-brand">
+            <a asp-controller="Home" asp-action="Index">
+                <h2 class="lv2">
+                    <img src={% static 'imgs/logo.png' %} class="logo" />
+                    <span>  Văn thư</span>
+                </h2>
+            </a>
+        </div>
+        <div class="sidebar-menu">
+            <ul>
+                <li>
+                    <a href="/home" page="home" title="Dashboard" class="sidebar-link">
+                        <span>
+                            <i class="bi bi-speedometer2"></i>
+                        </span>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                {% if user.role == 0 %}
+                    <li>
+                        <a href="/quan-ly-nguoi-dung/nguoi-dung" page="quan-ly-nguoi-dung" title="Quản lý người dùng" class="sidebar-link">
+                            <span>
+                                <i class="bi bi-people"></i>
+                            </span>
+                            <span>Quản lý người dùng</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/quan-ly-danh-muc" page="quan-ly-danh-muc" title="Quản lý danh mục" class="sidebar-link">
+                            <span>
+                                <i class="bi bi-tags"></i>
+                            </span>
+                            <span>Quản lý danh mục</span>
+                        </a>
+                    </li>
+                {% endif %}
+                <li>
+                    <a href="/quan-ly-sach" page="quan-ly-sach" title="Quản lý sách" class="sidebar-link">
+                        <span>
+                            <i class="bi bi-book"></i>
+                        </span>
+                        <span>Quản lý sách</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/quan-ly-thiet-bi" page="quan-ly-thiet-bi" title="Quản lý thiết bị" class="sidebar-link">
+                        <span>
+                            <i class="bi bi-tools"></i>
+                        </span>
+                        <span>Quản lý thiết bị</span>
+                    </a>
+                </li>
+               
+                <li>
+                    <a href="/quan-ly-muon-tra" page="quan-ly-muon-tra" title="Quản lý cho mượn / thu hồi sách" class="sidebar-link">
+                        <span>
+                            <i class="bi bi-journal-arrow-up"></i>
+                        </span>
+                        <span>Quản lý cho mượn / thu hồi sách</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/quan-ly-tinh-hinh-muon-tra" page="quan-ly-tinh-hinh-muon-tra" title="Quản lý tình hình mượn / trả" class="sidebar-link">
+                        <span>
+                            <i class="bi bi-clipboard-data"></i>
+                        </span>
+                        <span>Quản lý tình hình mượn / trả</span>
+                    </a>
+                </li>
+                <li>
+                    <a page="quan-ly-kho-sach" title="Quản lý kho sách" class="sidebar-link">
+                        <span>
+                            <i class="bi bi-box-seam"></i>
+                        </span>
+                        <span>Quản lý kho sách</span>
+                    </a>
+                    <ul class="subs-menu">
+                        <li class="sub-item">
+                            <a href="/quan-ly-kho-sach/nhap-sach" title="Nhập sách" class="sub-link">
+                                Nhập sách
+                            </a>
+                        </li>
+                        <li class="sub-item">
+                            <a href="/quan-ly-kho-sach/huy-sach" title="Hủy sách" class="sub-link">
+                                Hủy sách
+                            </a>
+                        </li>
+                        <li class="sub-item">
+                            <a href="/quan-ly-kho-sach/kiem-ke" title="Kiểm kê" class="sub-link">
+                                Kiểm kê
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a page="thong-ke" title="Thống kê" class="sidebar-link">
+                        <span>
+                            <i class="bi bi-bar-chart"></i>
+                        </span>
+                        <span>Thống kê</span>
+                    </a>
+                    <ul class="subs-menu">
+                        <li class="sub-item">
+                            <a href="/thong-ke/nhap-huy/" title="Thống kê nhập / hủy" class="sub-link">
+                                Thống kê nhập / hủy
+                            </a>
+                        </li>
+                        <li class="sub-item">
+                            <a href="/thong-ke/ton-kho/" title="Thống kê tồn kho" class="sub-link">
+                                Thống kê tồn kho
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="/logout" title="Thoát">
+                        <span>
+                            <i class="bi bi-box-arrow-right"></i>
+                        </span>
+                        <span>Thoát</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <header>
+            <h2 class="lv2">
+                <label for="nav-toggle">
+                    <span>
+                        <i class="bi bi-list"></i>
+                    </span>
+                </label>
+            </h2>
+            {# An thanh search       #}
+            <div class="search-wrapper d-none">
+                <span>
+                    <i class="bi bi-search"></i>
+                </span>
+                <input type="search" placeholder="Search here" />
+            </div>
+
+            <div class="user-wrapper">
+                <img src={% static 'imgs/avatar_default.jpg' %} alt="" width="30px" height="30px">
+                <div>
+                    <h4 class="lv4">{{ user.email }}</h4>
+                    <small>{% if user.role == 0 %} Admin {% elif user.role == 1 %} Thủ thư {% endif %}</small>
+                </div>
+            </div>
+        </header>
+        {% comment %} Body {% endcomment %}
+        <main>
+            <div class="modal-bg d-none"></div>
+            {% block content %}{% endblock  %}
+        </main>
+    </div>
+
+    {% if messages %}
+        {% for message in messages %}
+            <script type=text/javascript>toastr.{{ message.tags }}('{{ message }}')</script>
+        {% endfor %}
+    {% endif %}
+
+    <script src={% static 'javascript/app.js' %}></script>
+</body>
+</html>

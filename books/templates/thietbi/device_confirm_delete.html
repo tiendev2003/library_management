@@ -1,0 +1,14 @@
+{% extends "index.html" %}
+
+{% block title %}
+    Xác nhận xóa thiết bị
+{% endblock  %}
+
+{% block content %}
+    <h2>Bạn có chắc chắn muốn xóa "{{ device.name }}"?</h2>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Yes, delete</button>
+    </form>
+    <a href="{% url 'device_list' %}" class="btn btn-secondary">Cancel</a>
+{% endblock  %}

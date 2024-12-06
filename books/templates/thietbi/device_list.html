@@ -1,0 +1,118 @@
+{% extends "index.html" %}
+
+{% block title %}
+    Quản lý thiết bị
+{% endblock  %}
+
+{% block content %}
+    <h2 class="lv2">Danh sách thiết bị</h2>
+    <div class="text-start d-flex justify-content-between" style="margin: 12px 0;">
+        <a href="{% url 'device_create' %}" class="btn btn-outline-primary">
+            <i class="bi bi-plus-circle"></i>&nbsp; Tạo mới
+        </a>
+        <div class="search-block w-25">
+            <div class="input-group">
+                <span class="input-group-text search-icon" onclick="searchDevice()">
+                    <i class="bi bi-search"></i>
+                </span>
+                <input type="text" class="form-control search-device" placeholder="Search" onkeypress="searchDeviceEnter(event)">
+            </div>
+        </div>
+    </div>
+    <table class="table table-hover">
+        <thead>
+            <tr class="table-primary">
+                <th scope="col">ID</th>
+                <th scope="col">Tên thiết bị</th>
+                <th scope="col">Mô tả</th>
+                <th scope="col">Ngày mua</th>
+                <th scope="col">Trạng thái</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if devices|length == 0 %}
+                <tr>
+                    <td colspan="6" class="text-center">Không có dữ liệu</td>
+                </tr>
+            {% endif %}
+            {% for device in devices %}
+                <tr>
+                    <th class="d-table-cell align-middle" scope="row">{{ device.pk }}</th>
+                    <td class="d-table-cell align-middle">{{ device.name }}</td>
+                    <td class="d-table-cell align-middle">{{ device.description }}</td>
+                    <td class="d-table-cell align-middle">{{ device.purchase_date|date:"Y-m-d" }}</td>
+                    <td class="d-table-cell align-middle">{{ device.status }}</td>
+                    <td class="d-table-cell align-middle">
+                        <a href="{% url 'device_update' device.pk %}" class="btn btn-outline-primary" style="margin-right: 8px" title="Sửa">
+                            <i class="bi bi-gear"></i>
+                        </a>
+                        <button type="button" class="btn btn-outline-danger" title="Xóa" onclick="deleteDevice('{{ device.pk }}')">
+                            <i class="bi bi-trash3"></i>
+                        </button>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="modal-main modal-delete d-none">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Xác nhận xóa</h5>
+            </div>
+            <div class="modal-body">
+                <p class="modal-desc">Bạn có chắc chắn muốn xóa thiết bị này không?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="cancelDelete()">Hủy</button>
+                <button type="button" class="btn btn-danger btn-delete" onclick="confirmDelete()">Xóa</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        let currentDeviceId = null;
+
+        function deleteDevice(deviceId) {
+            currentDeviceId = deviceId;
+            const modal = document.querySelector('.modal-delete');
+            modal.classList.remove('d-none');
+        }
+
+        function confirmDelete() {
+            if (currentDeviceId) {
+                fetch(`/quan-ly-thiet-bi/delete/${currentDeviceId}/`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    }
+                })
+                .then(response => {
+                    if (response.ok) {
+                        location.reload();
+                    } else {
+                        alert("Xóa thiết bị thất bại.");
+                    }
+                });
+            }
+        }
+
+        function cancelDelete() {
+            const modal = document.querySelector('.modal-delete');
+            modal.classList.add('d-none');
+        }
+
+        function searchDevice() {
+            const searchInput = document.querySelector('.search-device').value;
+            if (searchInput) {
+                window.location.href = `/quan-ly-thiet-bi/search/${searchInput}/`;
+            }
+        }
+
+        function searchDeviceEnter(event) {
+            if (event.key === 'Enter') {
+                searchDevice();
+            }
+        }
+    </script>
+{% endblock  %}

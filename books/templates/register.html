@@ -1,0 +1,52 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+    <link rel="stylesheet" href="{% static 'css/bootswatch_flatly.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" integrity="sha512-vKMx8UnXk60zUwyUnUPM3HbQo8QfmNx7+ltw8Pm5zLusl1XIfwcxo8DbWCqMGKaWeNxWA8yrx5v3SaVpMvR3CA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</head>
+<body>
+    <div class="bg-primary" style="height:100vh;">
+        <main role="main" class="pb-3 main h-100">
+            <div style="min-height: 520px" class="login">
+                <h2 class="text-primary">Đăng kí</h2>
+                
+                <div class="text-start">
+                        <a href="/">Quay về</a>
+                </div>
+                <form action={% url 'registerPost' %} method="post" autocomplete="off">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="inputTenDN" class="form-label mt-4">Email</label>
+                        <input type="email" class="form-control" id="" name="email" required placeholder="Nhập email">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputMK" class="form-label mt-4">Mật khẩu</label>
+                        <input type="password" class="form-control" id="" name="password" required placeholder="Nhập mật khẩu" autocomplete="off">
+                    </div>
+                    <div class="form-group">
+                        <label for="inputMK" class="form-label mt-4">Nhập lại mật khẩu</label>
+                        <input type="password" class="form-control" id="" name="rppassword" required placeholder="Nhập lại mật khẩu" autocomplete="off">
+                    </div>
+                    <br />
+                    <div class="text-center">
+                        <input type="submit" value="Register" class="btn btn-primary w-100" />
+                    </div>
+                </form>
+            </div>
+        </main>
+    </div>
+{% if messages %}
+        {% for message in messages %}
+            <script type=text/javascript>toastr.{{ message.tags }}('{{ message }}')</script>
+        {% endfor %}
+    {% endif %}
+</body>
+</html>

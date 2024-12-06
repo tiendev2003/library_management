@@ -1,0 +1,43 @@
+{% extends "index.html" %}
+
+{% block title %}
+    {% if form.instance.pk %}Cập nhật{% else %}Thêm{% endif %} thiết bị
+{% endblock %}
+
+{% block content %}
+    <h2 class="lv2">{% if form.instance.pk %}Cập nhật{% else %}Thêm{% endif %} thiết bị</h2>
+    <form method="post" action="{% if form.instance.pk %}{% url 'device_update' form.instance.pk %}{% else %}{% url 'device_create' %}{% endif %}" class="form" autocomplete="off">
+        {% csrf_token %}
+        <fieldset>
+            <div class="d-flex justify-content-between gap-4">
+                <div class="form-group mt-4 w-50">
+                    <label class="form-label">Tên thiết bị</label>
+                    <input type="text" class="form-control" value="{{ form.name.value }}" required placeholder="Enter name" name="name">
+                </div>
+                <div class="form-group mt-4 w-50">
+                    <label class="form-label">Mô tả</label>
+                    <input type="text" class="form-control" value="{{ form.description.value }}" required placeholder="Enter description" name="description">
+                </div>
+            </div>
+            <div class="d-flex justify-content-between gap-4">
+                <div class="form-group mt-4 w-50">
+                    <label class="form-label">Ngày mua</label>
+                    <input type="date" class="form-control" value="{{ form.purchase_date.value|date:'Y-m-d' }}" required name="purchase_date">
+                </div>
+                <div class="form-group mt-4 w-50">
+                    <label class="form-label">Trạng thái</label>
+                    <select class="form-control" required name="status">
+                        <option value="Hoạt động" {% if form.status.value == "Hoạt động" %}selected{% endif %}>Hoạt động</option>
+                        <option value="Không hoạt động" {% if form.status.value == "Không hoạt động" %}selected{% endif %}>Không hoạt động</option>
+                    </select>
+                </div>
+            </div>
+            <div class="mt-5">
+                <a href="{% url 'device_list' %}" class="btn btn-outline-primary" style="margin-right: 4px">Quay lại</a>
+                <button type="submit" class="btn btn-success">
+                    <i class="bi bi-plus-circle"></i>&nbsp; {% if form.instance.pk %}Lưu{% else %}Tạo{% endif %}
+                </button>
+            </div>
+        </fieldset>
+    </form>
+{% endblock %}

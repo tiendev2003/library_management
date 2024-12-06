@@ -1,0 +1,18 @@
+{% extends "index.html" %}
+
+{% block title %}
+    Chi tiết thiết bị
+{% endblock %}
+
+{% block content %}
+    <h2 class="lv2">{{ device.name }}</h2>
+    <p>{{ device.description }}</p>
+    <p>Ngày mua: {{ device.purchase_date|date:"Y-m-d" }}</p>
+    <p>Trạng thái: {{ device.status }}</p>
+    <a href="{% url 'device_update' device.pk %}" class="btn btn-outline-primary" style="margin-right: 8px">Sửa</a>
+    <form action="{% url 'device_delete' device.pk %}" method="post" style="display: inline">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-outline-danger">Xóa</button>
+    </form>
+    <a href="{% url 'device_list' %}" class="btn btn-outline-secondary">Quay lại</a>
+{% endblock %}
